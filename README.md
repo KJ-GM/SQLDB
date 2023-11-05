@@ -1,4 +1,4 @@
-# SQL-Oracle-DB
+# SQL-Oracle-DB - Quiz 1 + 2
 
  > **Quiz 1**
 
