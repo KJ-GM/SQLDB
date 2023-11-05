@@ -99,6 +99,7 @@ Tasks:
 
 ```js
 
+
 -- Quiz 2: Student: Karam Elgamal - 201829
 
 -- Create the Countries table
@@ -174,21 +175,25 @@ INSERT INTO Grades (Grade, Min_Score, Max_Score) VALUES ('F', 0, 50);
 
 -- 1)
 SELECT * FROM Countries c inner JOIN Universities u ON c.Country_ID = u.Country_ID;
-SELECT * FROM Students JOIN Universities USING (UniversityID); -- With Using clause
+-- With {Using} clause
+SELECT * FROM Students JOIN Universities USING (UniversityID); 
 
 
 -- 2)
 SELECT * FROM Countries c JOIN Universities u ON c.Country_ID = u.Country_ID JOIN Students s ON u.UniversityID = s.UniversityID;
-SELECT * FROM Countries JOIN Universities USING(Country_ID) JOIN Students USING (UniversityID); -- Same but with Using clause
+-- With {Using} clause
+SELECT * FROM Countries JOIN Universities USING(Country_ID) JOIN Students USING (UniversityID); 
 
 -- Join Students, Exams, and Grades
 
 -- 1)
-SELECT * FROM Students inner JOIN Exams USING(Sid); -- With Using clause
+SELECT * FROM Students s inner JOIN Exams e ON s.Sid = e.Sid; 
 
 
 -- 2)
+-- With {Using} clause
 SELECT * FROM Students JOIN Exams e USING(Sid) JOIN Grades g ON e.score BETWEEN g.Min_Score AND g.Max_Score;
+
 
 
 ```
