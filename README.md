@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2
+# SQL-Oracle-DB - Quiz 1 + 2 +3
 
  > **Quiz 1**
 
@@ -98,8 +98,6 @@ Tasks:
  > **Quiz 2 - Solution**
 
 ```js
-
-
 -- Quiz 2: Student: Karam Elgamal - 201829
 
 -- Create the Countries table
@@ -193,7 +191,38 @@ SELECT * FROM Students s inner JOIN Exams e ON s.Sid = e.Sid;
 -- 2)
 -- With {Using} clause
 SELECT * FROM Students JOIN Exams e USING(Sid) JOIN Grades g ON e.score BETWEEN g.Min_Score AND g.Max_Score;
+```
+ > **Quiz 3**
 
+Tasks: 
+1. write inner join statement of scott.emp and scott.dept tables;
+2. After joining of scott.emp and scott.dept tables display values of department name, employee name,job and salary columns;
+3. Filter the rows that is returned in Task 2  and show only those rows that correspond to employees in sales department.
+4. Write  left join statement of scott.emp nd scott.dept tbles;
+5. Write natural join statement of scott.emp nd scott.dept tbles;
+6. In the scott. emp table there is the column mgr that coresponds to the employee manager. Write the self join that  
+   selects the employees data and their managers names
 
+ > **Quiz 3 - Solution**
+```js
+-- Student: Karam Elgamal(201829)
+
+-- Question 1
+SELECT * FROM scott.emp INNER JOIN scott.dept USING(deptno);
+
+-- Question 2
+SELECT scott.dept.dname, scott.emp.ename, scott.emp.job, scott.emp.sal FROM scott.emp INNER JOIN scott.dept ON scott.emp.deptno = scott.dept.deptno;
+
+-- Question 3
+SELECT scott.dept.dname, scott.emp.ename, scott.emp.job, scott.emp.sal FROM scott.emp INNER JOIN scott.dept ON scott.emp.deptno = scott.dept.deptno WHERE scott.dept.dname = 'SALES';
+
+-- Question 4
+SELECT * FROM scott.emp e LEFT JOIN scott.dept d ON e.deptno = d.deptno;
+
+-- Question 5
+SELECT * FROM scott.emp NATURAL JOIN scott.dept;
+
+-- Question 6
+SELECT e.ename AS employee_name, e.job AS employee_job, m.ename AS manager_name, m.job AS manager_job FROM scott.emp e LEFT JOIN scott.emp m ON e.mgr = m.empno;
 
 ```
