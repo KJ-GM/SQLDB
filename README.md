@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2 +3
+# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4
 
  > **Quiz 1**
 
@@ -225,4 +225,94 @@ SELECT * FROM scott.emp NATURAL JOIN scott.dept;
 -- Question 6
 SELECT e.ename AS employee_name, e.job AS employee_job, m.ename AS manager_name, m.job AS manager_job FROM scott.emp e LEFT JOIN scott.emp m ON e.mgr = m.empno;
 
+```
+
+ > **Quiz 4**
+
+Task 1. In an anonymous PL/SQL block, declare a function named - productNum which is passed two numeric variables as parameters and which calculates and returns the division of said two variables. In the execution section of the anonymous PL/SQL block, call the productNum function and display the value it returns.
+
+Task 2. Modify the anonymous PL/SQL block created in  the task1 so that it should display 10 times the value returned after calling productNum function.
+
+Task 3. In an anonymous PL/SQL block that was created in Task1 declare an additional numeric  variable and assign
+the value to it returned by productNum function.
+
+Task 4. Select the parameter values for the productNum function so that a division-by-zero exception occurs in its execution section. Refactor the productNum function so that it handles the exception. 
+
+ > **Quiz 4 - Solution**
+```js
+-- Student: Karam Elgamal(201829)
+
+-- Question 1
+DECLARE number1 number; number2 number;
+FUNCTION productNum (num1 IN number, num2 IN number) RETURN number IS res number;
+
+BEGIN
+  res := num1 / num2;
+  RETURN res;
+END;
+
+BEGIN
+  number1:= 20;
+  number2:= 10;
+
+  dbms_output.put_line('Product of (20,10): ' || productNum(number1, number2));
+END;
+
+-- Question 2
+
+DECLARE number1 number; number2 number;
+FUNCTION productNum (num1 IN number, num2 IN number) RETURN number IS res number;
+
+BEGIN
+  res := num1 / num2;
+  RETURN res;
+END;
+
+BEGIN
+  number1:= 20;
+  number2:= 10;
+  -- Print for 10 times
+  FOR i IN 1..10 LOOP
+    dbms_output.put_line(' Product of (20,10): ' || productNum(number1, number2));
+  END LOOP;
+END;
+
+-- Question 3
+
+DECLARE number1 number; number2 number; result number;
+FUNCTION productNum (num1 IN number, num2 IN number) RETURN number IS res number;
+
+BEGIN
+  res := num1 / num2;
+  RETURN res;
+END;
+
+BEGIN
+  number1:= 20;
+  number2:= 10;
+  result:= productNum(number1, number2);
+
+  dbms_output.put_line('Product of (20,10): ' || result);
+END;
+
+-- Question 4
+ 
+DECLARE number1 number; number2 number;
+FUNCTION productNum (num1 IN number, num2 IN number) RETURN number IS res number;
+
+BEGIN
+  res := num1 / num2;
+  RETURN res;
+END;
+
+BEGIN
+  number1:= 20;
+
+  number2:= 0;
+
+  dbms_output.put_line(' Product of (20,10): ' || productNum(number1, number2));
+  EXCEPTION
+    WHEN ZERO_DIVIDE THEN
+    dbms_output.put_line('Error: Division by zero');
+END;
 ```
