@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4
+# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5
 
  > **Quiz 1**
 
@@ -315,4 +315,45 @@ BEGIN
     WHEN ZERO_DIVIDE THEN
     dbms_output.put_line('Error: Division by zero');
 END;
+```
+ > **Quiz 5**
+
+Task 1. In the following string: 'This is a general playlist ant this one is my playlist' start the search at the 5th character and find the index where the substring 'is' occurs the third time.
+
+Task 2. Write a recursive function that takes an integer n as a parameter and calculates the factorial of n.
+
+Task 3. Give an example of the to_timestamp() function that is given the string '25-Aug-2030 18:10:35.123456789' and the corresponding mask. The function should return a timestamp value.
+
+Task 4. Write a select command that extracts records from the Scott.dept table and combines the values of the DNAM and LOC fields into a single field during the extraction process. The combined fields should look like this: DNAME-LOC
+
+ > **Quiz 5 - Solution**
+```js
+-- Student: Karam Elgamal-201829
+
+Declare
+text1 VARCHAR(150) := 'This is a general playlist ant this one is my playlist';
+date1 VARCHAR(150) := '25-Aug-2030 18:10:35.123456789';
+
+BEGIN
+    --Q1
+   dbms_output.put_line('Start [' || INSTR(text1,'is',5, 3)|| ']');
+   --Q3
+	dbms_output.put_line(TO_TIMESTAMP(date1, 'DD-Mon-YYYY HH24:MI:SS.FF'));
+END;
+
+--Q2
+CREATE OR REPLACE FUNCTION Factorial( n NUMBER ) RETURN NUMBER  IS
+  BEGIN
+    IF n <= 1 THEN 
+      RETURN 1;
+    ELSE
+     RETURN n*Factorial(n-1);
+   END IF;
+  END Factorial;
+
+SELECT Factorial(6) from dual;
+
+--Q4
+SELECT CONCAT(DNAME || ' ', LOC) AS Combined FROM Scott.dept;
+
 ```
