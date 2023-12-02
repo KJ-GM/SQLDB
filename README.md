@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5
+# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1)
 
  > **Quiz 1**
 
@@ -356,4 +356,17 @@ SELECT Factorial(6) from dual;
 --Q4
 SELECT CONCAT(DNAME || ' ', LOC) AS Combined FROM Scott.dept;
 
+```
+
+ > **Midterm 1**
+
+Task 1. In the following string: 'This is a general playlist ant this one is my playlist' start the search at the 5th character and find the index where the substring 'is' occurs the third time.
+
+Task 2. Write a recursive function that takes an integer n as a parameter and calculates the factorial of n.
+
+Task 3. Give an example of the to_timestamp() function that is given the string '25-Aug-2030 18:10:35.123456789' and the corresponding mask. The function should return a timestamp value.
+
+Task 4. Write a select command that extracts records from the Scott.dept table and combines the values of the DNAM and LOC fields into a single field during the extraction process. The combined fields should look like this: DNAME-LOC > **Quiz 5**
+```js
+test
 ```
