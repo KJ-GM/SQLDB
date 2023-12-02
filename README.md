@@ -359,14 +359,145 @@ SELECT CONCAT(DNAME || ' ', LOC) AS Combined FROM Scott.dept;
 ```
 
  > **Midterm 1**
-
-Task 1. In the following string: 'This is a general playlist ant this one is my playlist' start the search at the 5th character and find the index where the substring 'is' occurs the third time.
-
-Task 2. Write a recursive function that takes an integer n as a parameter and calculates the factorial of n.
-
-Task 3. Give an example of the to_timestamp() function that is given the string '25-Aug-2030 18:10:35.123456789' and the corresponding mask. The function should return a timestamp value.
-
-Task 4. Write a select command that extracts records from the Scott.dept table and combines the values of the DNAM and LOC fields into a single field during the extraction process. The combined fields should look like this: DNAME-LOC > **Quiz 5**
 ```js
-test
+-- Student: Karam Elgamal(201829)
+
+-- Task 1:
+
+CREATE TABLE Teams (
+TeamID INT PRIMARY KEY,
+TeamName VARCHAR(50) NOT NULL,
+City VARCHAR(50) NOT NULL,
+Country VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Players (
+PlayerID INT PRIMARY KEY,
+TeamID INT,
+PlayerName VARCHAR(50) NOT NULL,
+Age INT,
+GoalsScored INT,
+FOREIGN KEY (TeamID) REFERENCES Teams(TeamID)
+);
+
+CREATE TABLE PlayedGames (
+MatchID INT PRIMARY KEY,
+TeamA INT,
+TeamB INT,
+MatchResult VARCHAR(10) NOT NULL,
+FOREIGN KEY (TeamA) REFERENCES Teams(TeamID),
+FOREIGN KEY (TeamB) REFERENCES Teams(TeamID)
+);
+
+-- Task 2:
+
+INSERT INTO Teams (TeamID, TeamName, City, Country)  VALUES 
+(1, 'DinamoT', 'Tbilisi', 'Georgia');
+INSERT INTO Teams (TeamID, TeamName, City, Country)  VALUES 
+(2, 'DinamoB', 'Batumi', 'Georgia');
+INSERT INTO Teams (TeamID, TeamName, City, Country)  VALUES 
+(3, 'DinamoG', 'Gadauri', 'Georgia');
+INSERT INTO Teams (TeamID, TeamName, City, Country)  VALUES 
+(4, 'DinamoR', 'Rachpori', 'Israel');
+INSERT INTO Teams (TeamID, TeamName, City, Country)  VALUES 
+(5, 'DinamoM', 'Moscow', 'Russia');
+
+
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(1, 1, 'Karam Elgamal', 21, 2);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(2, 1, 'Cristiano Ronaldo', 26, 2);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(3, 1, 'Lionel Messi', 35, 4);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(4, 1, 'Hakeem Ziech', 30, 0);
+
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(5, 2, 'Gianluigi Buffon', 22, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(6, 2, 'Luis Suarez', 34, 2);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(7, 2, 'Sergio Ramos', 39, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(8, 2, 'Vincent Kompany', 38, 0);
+
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(9,  3, 'Xavi', 40, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(10, 3, 'Andres Iniesta', 20, 2);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(11, 3, 'Zlatan Ibrahimovic', 39, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(12, 3, 'Radamel Falcao', 30, 2);
+
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(13, 4, 'Robin van Persie', 19, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(14, 4, 'Andrea Pirlo', 24, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(15, 4, 'Yaya Toure', 32, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(16, 4, 'Edinson Cavani', 26, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(17, 5, 'Sergio Aguero', 18, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(18, 5, 'Iker Casillas', 36, 2);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(19, 5, 'Neymar', 30, 0);
+INSERT INTO Players (PlayerID, TeamID, PlayerName, Age, GoalsScored) VALUES
+(20, 5, 'Sergio Busquets', 22, 3);
+
+INSERT INTO PlayedGames (MatchID, TeamA, TeamB, MatchResult) VALUES
+(1, 1, 2, 'DinamoT Won!');
+INSERT INTO PlayedGames (MatchID, TeamA, TeamB, MatchResult) VALUES
+(2, 3, 4, 'DinamoG Won!');
+INSERT INTO PlayedGames (MatchID, TeamA, TeamB, MatchResult) VALUES
+(3, 5, 1, 'DinamoM Won!');
+
+-- Task 3:
+
+-- 3.1:
+SELECT Teams.Country, Players.PlayerName, Players.Age FROM Teams JOIN Players USING(TeamID);
+
+-- 3.2:
+SELECT Teams.Country, Players.PlayerName, Players.Age FROM Teams JOIN Players USING(TeamID) WHERE 
+Teams.Country = 'Georgia' AND Players.Age > 22;
+
+-- 3.4
+SELECT Teams.Country, Players.PlayerName, Players.Age FROM (
+SELECT Teams.Country, Players.PlayerName, Players.Age FROM Teams JOIN Players USING(TeamID) WHERE Teams.Country = 'Georgia' AND Players.Age > 25
+) AS ResultTable WHERE AverageAge > 25;
+
+-- 3.6
+SELECT
+    T1.TeamName AS TeamA,
+    P1.PlayerName AS PlayerA,
+    T2.TeamName AS TeamB,
+    P2.PlayerName AS PlayerB
+FROM
+    Teams T1
+JOIN
+    Players P1 ON T1.TeamID = P1.TeamID
+JOIN
+    Teams T2 ON T1.TeamID < T2.TeamID -- Ensures no duplicate combinations
+JOIN
+    Players P2 ON T2.TeamID = P2.TeamID
+LEFT JOIN
+    PlayedGames PG ON (T1.TeamID = PG.TeamA AND T2.TeamID = PG.TeamB) OR (T1.TeamID = PG.TeamB AND T2.TeamID = PG.TeamA)
+WHERE
+    PG.MatchID IS NULL;
+
+
+-- Task 4:
+CREATE OR REPLACE FUNCTION SUMFunction (n IN number) RETURN number IS res number:=0;
+BEGIN
+FOR i IN 1..n LOOP
+res := res + i;
+END LOOP;
+RETURN res;
+END;
+BEGIN
+  dbms_output.put_line('SUM:' || SUMFunction(5));
+END;
+
 ```
