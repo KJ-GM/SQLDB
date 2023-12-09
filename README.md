@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1)
+# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6
 
  > **Quiz 1**
 
@@ -501,3 +501,40 @@ BEGIN
 END;
 
 ```
+ > **Quiz 6**
+
+Task 1. Select average, max, min and total salaries in single select statement
+
+Task 2. Group select average, max, min and total salaries by department number
+
+Task 3. Filter the rows in the task 2 based the condition average salary is greater than 9000
+
+ > **Quiz 6 - Solution**
+```js
+-- Student: Karam Elgamal(201829)
+
+-- Q1
+SELECT 
+    AVG(sal),
+    MAX(sal),
+    MIN(sal),
+    SUM(sal)
+FROM scott.emp;
+
+-- Q2
+SELECT 
+    AVG(sal),
+    MAX(sal),
+    MIN(sal),
+    SUM(sal)
+FROM scott.emp GROUP BY DEPTNO;
+
+-- Q3
+SELECT 
+    AVG(sal),
+    MAX(sal),
+    MIN(sal),
+    SUM(sal)
+FROM scott.emp GROUP BY DEPTNO having AVG(sal)>9000;
+```
+
