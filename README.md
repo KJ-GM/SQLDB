@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6
+# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6 + 7
 
  > **Quiz 1**
 
@@ -538,3 +538,52 @@ SELECT
 FROM scott.emp GROUP BY DEPTNO having AVG(sal)>9000;
 ```
 
+ > **Quiz 7**
+
+Task 1. What is a subquery, and how is it different from a regular query?
+
+Task 2. Write a subquery to find the names of employees (from scott.emp) who work in the department with
+the highest average salary.
+
+Task 3. Explain the difference between a correlated subquery and a non-correlated subquery.
+
+Task 4. Use a subquery to find the department names (from scott.dept) that have at least one employee (from
+scott.emp).
+
+Task 5. Write a subquery to find the employees (from scott.emp) who earn more than the average salary in
+their respective departments (from scott.dept).
+
+ > **Quiz 7 - Solution**
+```js
+-- Student: Karam Elgamal(201829)
+
+-- Q1
+-- A sub query, as its name implies, is a query that is nested inside a main query and is typically used as a need to retrieve particular data from a table.
+-- As mentioned above, it differs from a regular query in that it is nested within another query and serves the primary query's purpose of obtaining data from a table.
+
+-- Q2
+SELECT ename FROM scott.emp WHERE deptno = 
+(
+    SELECT deptno FROM scott.emp GROUP BY deptno
+    ORDER BY AVG(sal) DESC FETCH FIRST 1 ROW ONLY
+);
+
+-- Q3
+-- Both are types of sub-queries, the diffrence is that in a noncorrelated subquery obtains its results independently of its main statement. 
+-- While the correlated subquery requires values from its main query in order to execute.
+
+-- Q4
+SELECT d.dname FROM scott.dept d WHERE d.deptno IN 
+(
+    SELECT e.deptno
+    FROM scott.emp e
+);
+
+-- Q5
+SELECT * FROM scott.emp e WHERE sal > 
+(
+    SELECT AVG(sal)
+    FROM scott.emp
+    WHERE deptno = e.deptno
+);
+```
