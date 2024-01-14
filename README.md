@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6 + 7
+# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6 + 7 + 9
 
  > **Quiz 1**
 
@@ -586,4 +586,40 @@ SELECT * FROM scott.emp e WHERE sal >
     FROM scott.emp
     WHERE deptno = e.deptno
 );
+```
+> **Quiz 9**
+
+Task 1. Write a SQL query to retrieve the names (ename) and salaries (sal) of employees from the emp table who earn more than the average salary of their respective departments.
+
+Task 2.Create a SQL query that lists the department numbers (deptno) and the total number of employees in each department from the emp table. Use a subquery in your solution.
+
+Task 3. Compose a SQL query to find the employee names (ename) and job titles (job) of those employees who have the same job title as the employee with the name 'SMITH'.
+
+Task 4.Write a SQL query to retrieve the department numbers (deptno) and the maximum salary (sal) in each department from the emp table. Utilize a subquery to achieve this.
+
+ > **Quiz 9 - Solution**
+```js
+-- Student: Karam Elgamal(201829)
+
+--Q1
+SELECT ename, sal FROM scott.emp e1 WHERE sal > (
+    SELECT AVG(sal) FROM scott.emp e2 WHERE e1.deptno = e2.deptno
+    );
+
+--Q2
+SELECT deptno, 
+       (SELECT COUNT(*) FROM Scott.emp e2 WHERE e2.deptno = e1.deptno) AS total_emp
+FROM Scott.emp e1
+GROUP BY deptno;
+
+--Q3
+SELECT ename, job
+FROM Scott.emp
+WHERE job = (SELECT job FROM Scott.emp WHERE ename = 'SMITH');
+
+--Q4
+SELECT deptno, 
+       (Select MAX(sal) FROM Scott.emp e2 WHERE e2.deptno = e1.deptno) as Max_sal
+FROM Scott.emp e1
+GROUP BY deptno;
 ```
