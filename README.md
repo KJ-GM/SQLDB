@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6 + 7 + 9
+# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6 + 7 + 9 + 10(last)
 
  > **Quiz 1**
 
@@ -622,4 +622,81 @@ SELECT deptno,
        (Select MAX(sal) FROM Scott.emp e2 WHERE e2.deptno = e1.deptno) as Max_sal
 FROM Scott.emp e1
 GROUP BY deptno;
+```
+> **Quiz 10 - Last**
+
+Task 1. Write the Inner join, left Outer Join, right outer join, cross join and natural join. Describe the difference between iner join and left outer join.
+
+Task 2. Write several select statements on emp table that uses several aggregation functions to aggregate salary data by deptno column. Restrict output by filtering In the select statement, using the having clause, filter the values of the aggregation function.
+
+Task 3. Write a select that returns the records of employees who earn more than the average salary in theirdepartment.
+
+Task 4. Write a select that returns records of employees who have a salary greater than the average salary and less than the maximum salary in their department.
+
+Task 5. Write the query statements that selects all columns from Emp table and one additional column – HireMonth. This additional column should contain information about the month of the year in which the employee was hired.
+
+Task 6. Write the query statements that selects all columns from Emp table and one additional column – EnameAndJob. This additional column should contain string values obtained through the concatenation of Ename and Job columns: Ename -Job.
+
+ > **Quiz 10 - Solution**
+```js
+-- Student: Karam Elgamal(201829)
+
+-- Q1 (Joins)
+
+-- Inner join
+Select * from scott.dept d inner join scott.emp e on d.deptno = e.deptno;
+
+-- Left join
+Select * from scott.dept d left outer join scott.emp e on d.deptno = e.deptno;
+
+-- Right join
+Select * from scott.dept d right outer join scott.emp e on d.deptno = e.deptno;
+
+-- Cross Join:
+SELECT * FROM scott.emp CROSS JOIN scott.dept;
+
+-- Natural Join:
+Select * from scott.dept d Natural join scott.emp e;
+
+-- INNER JOIN returns only the rows where there is a match in both tables based on the specified condition.
+-- LEFT OUTER JOIN returns all rows from the left table (the one listed before the LEFT OUTER JOIN clause), and the matched rows from the right table.
+
+-- Q2 (Aggregation function)
+
+-- Aggregate salary
+select sum(sal) from scott.emp;
+
+-- Sum + Avg + max + min salary grouped by deptno;
+select deptno, sum(sal), avg(sal), max(sal), min(sal) from scott.emp group by deptno;
+
+-- Restrict output by filtering: Avg salary value between 3000 - 1000
+select deptno, sum(sal), avg(sal), max(sal), min(sal) from scott.emp group by deptno having avg(sal)>1000 and avg(sal) < 3000;
+
+-- Q3 
+-- We join the scott.emp talbe with (deptno, avg(sal)) table and name it "dept_avg". We join it using the deptno and then apply the condition. {e. is used to select all the emps fields from the table we joined, if we use * it selects all cloums of the joined table}
+SELECT e.*
+FROM scott.emp e
+JOIN (
+    SELECT deptno, AVG(sal) AS avg_salary
+    FROM scott.emp
+    GROUP BY deptno
+) dept_avg ON e.deptno = dept_avg.deptno
+WHERE e.sal > dept_avg.avg_salary;
+
+-- Q4
+SELECT e.*
+FROM scott.emp e
+JOIN (
+    SELECT deptno, avg(sal) AS avg_salary, max(sal) as max_salary
+    FROM scott.emp
+    GROUP BY deptno
+) dept_stats ON e.deptno = dept_stats.deptno
+WHERE e.sal > dept_stats.avg_salary and e.sal<dept_stats.max_salary ;
+
+-- Q5
+select e.*, to_char(HIREDATE,'MM') as Hire_Year from scott.emp e;
+select e.*, extract(month from HIREDATE) as Hire_Year from scott.emp e;
+
+-- Q6
+select e.*, ename||'-'||job as NameAndJob from scott.emp e;
 ```
