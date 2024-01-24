@@ -1,4 +1,4 @@
-# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6 + 7 + 9 + 10(last)
+# SQL-Oracle-DB - Quiz 1 + 2 + 3 + 4 + 5 + Mid(1) + 6 + 7 + 9 + 10(last) + Presentation
 
  > **Quiz 1**
 
@@ -699,4 +699,93 @@ select e.*, extract(month from HIREDATE) as Hire_Year from scott.emp e;
 
 -- Q6
 select e.*, ename||'-'||job as NameAndJob from scott.emp e;
+```
+> **Presentation**
+
+Task 1. Create a database and related tables for retail banking. Tables should be created to store information about the following objects:
+1. Clients
+2. Client accounts and balances on them/
+3. Transfers from one account to another
+
+Create a procedure that adds a new record to the transfers table. On the transfers table, create a trigger that will change the balances on the respective accounts when a new record appears in the transfers table
+
+ > **Solution**
+```js
+-- Student: Karam Elgamal(201829)
+-- Presentation
+
+-- Clients table
+CREATE TABLE Clients (
+    client_id INT PRIMARY KEY,
+    Name VARCHAR(255),
+    phone VARCHAR(20),
+    country VARCHAR(255)
+);
+
+-- ClientAccounts table
+CREATE TABLE ClientAccounts (
+    account_id INT PRIMARY KEY,
+    client_id INT,
+    balance DECIMAL(10, 2),
+    FOREIGN KEY (client_id) REFERENCES Clients(client_id)
+);
+
+
+-- Transfers table
+CREATE TABLE Transfers (
+    transfer_id INT PRIMARY KEY,
+    sender_id INT,
+    receiver_id INT,
+    amount DECIMAL(10, 2),
+    transfer_date TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES ClientAccounts(account_id),
+    FOREIGN KEY (receiver_id) REFERENCES ClientAccounts(account_id)
+);
+
+-- Insert mock data
+INSERT INTO Clients VALUES (1, 'Karam Elgamal', '0584040447', 'Georgia'); -- Has two accounts
+INSERT INTO Clients VALUES (2, 'Malik wasel','0584234091', 'US');
+INSERT INTO Clients VALUES (3, 'Waseem Haj','0506278202', 'Russia');
+INSERT INTO ClientAccounts VALUES (100, 1, 5000.00);
+INSERT INTO ClientAccounts VALUES (101, 2, 2500.00);
+INSERT INTO ClientAccounts VALUES (102, 3, 7500.00);
+INSERT INTO ClientAccounts VALUES (103, 1, 1500.00);
+
+-- Sequence for transfer_id
+CREATE SEQUENCE SeqTransfer_id START WITH 1 INCREMENT BY 1;
+
+-- Procedure that adds a new record to the transfers table
+CREATE OR REPLACE PROCEDURE AddTransfer(sender_id INT,receiver_id INT,amount DECIMAL) IS
+BEGIN
+    INSERT INTO Transfers(transfer_id, sender_id, receiver_id, amount, transfer_date)
+    VALUES (SeqTransfer_id.NEXTVAL, sender_id, receiver_id, amount, SYSTIMESTAMP);
+END;
+
+-- Trigger to update balance of the sender and receiver
+CREATE OR REPLACE TRIGGER UpdateBalances
+AFTER INSERT ON Transfers
+FOR EACH ROW
+DECLARE
+    sender_balance DECIMAL;
+    receiver_balance DECIMAL;
+BEGIN
+    -- Get the current balances of both sender & receiver
+    SELECT balance INTO sender_balance FROM ClientAccounts WHERE account_id = :NEW.sender_id;
+    SELECT balance INTO receiver_balance FROM ClientAccounts WHERE account_id = :NEW.receiver_id;
+
+    -- Update the balances accordingly
+    UPDATE ClientAccounts SET balance = sender_balance - :NEW.amount WHERE account_id = :NEW.sender_id;
+    UPDATE ClientAccounts SET balance = receiver_balance + :NEW.amount WHERE account_id = :NEW.receiver_id;
+END;
+
+-- Testing(AddTransfer procedure & Trigger balance change)
+BEGIN
+    AddTransfer(100, 101, 2500.00);
+    AddTransfer(103, 102, 500.00);
+END;
+
+-- Testing select data
+select * from Transfers;
+select * from Clients;
+select * from ClientAccounts;
 ```
