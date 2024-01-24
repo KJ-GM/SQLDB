@@ -702,7 +702,7 @@ select e.*, ename||'-'||job as NameAndJob from scott.emp e;
 ```
 > **Presentation**
 
-Task 1. Create a database and related tables for retail banking. Tables should be created to store information about the following objects:
+Task: Create a database and related tables for retail banking. Tables should be created to store information about the following objects:
 1. Clients
 2. Client accounts and balances on them/
 3. Transfers from one account to another
